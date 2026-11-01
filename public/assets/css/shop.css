@@ -684,17 +684,20 @@ body {
     border-color: var(--brand-primary);
     color: var(--brand-primary);
 }
-.pdp-variant-chip input:checked + span {
+.pdp-variant-chip input:checked + span,
+.pdp-variant-chip.active-selected span {
     background: var(--brand-primary);
     border-color: var(--brand-primary);
     color: #fff;
     box-shadow: 0 4px 12px rgba(99,102,241,.25);
 }
-.pdp-variant-chip.disabled {
+.pdp-variant-chip.disabled,
+.pdp-variant-chip.disabled-combination {
     pointer-events: none;
-    opacity: .4;
+    opacity: .35;
 }
-.pdp-variant-chip.disabled span {
+.pdp-variant-chip.disabled span,
+.pdp-variant-chip.disabled-combination span {
     text-decoration: line-through;
     color: var(--text-muted);
     background: #f1f5f9;
@@ -722,11 +725,13 @@ body {
     border-color: var(--brand-primary);
     transform: scale(1.1);
 }
-.pdp-color-chip input:checked + .pdp-color-swatch {
+.pdp-color-chip input:checked + .pdp-color-swatch,
+.pdp-color-chip.active-selected .pdp-color-swatch,
+.pdp-color-swatch.active {
     border-color: var(--brand-primary);
-    box-shadow: 0 0 0 3px rgba(99,102,241,.25);
+    box-shadow: 0 0 0 3px rgba(99,102,241,.35);
     color: #fff;
-    text-shadow: 0 1px 2px rgba(0,0,0,.5);
+    text-shadow: 0 1px 2px rgba(0,0,0,.6);
 }
 
 /* ---------- Description ---------- */
@@ -1375,6 +1380,117 @@ body {
     .pdp-related-section .product-card {
         border-radius: 12px;
         box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    }
+}
+
+/* =========================================================================
+   WISHLIST & MICRO-INTERAÇÕES DE CONVERSÃO
+   ========================================================================= */
+
+@keyframes heartBounce {
+    0% { transform: scale(1); }
+    30% { transform: scale(1.35); }
+    60% { transform: scale(0.85); }
+    100% { transform: scale(1); }
+}
+
+.heart-animate {
+    animation: heartBounce 0.45s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.btn-favorite-card {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(4px);
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #64748b;
+    font-size: 1.15rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    transition: all 0.25s ease;
+    z-index: 5;
+    cursor: pointer;
+}
+
+.btn-favorite-card:hover {
+    background: #ffffff;
+    color: #ef4444;
+    transform: scale(1.12);
+    box-shadow: 0 4px 12px rgba(239, 68, 68, 0.2);
+}
+
+.btn-favorite-card.is-favorite {
+    color: #ef4444;
+    background: #ffffff;
+    border-color: rgba(239, 68, 68, 0.25);
+}
+
+.btn-favorite-pdp {
+    transition: all 0.25s ease;
+}
+.btn-favorite-pdp.is-favorite {
+    color: #ef4444 !important;
+    border-color: #ef4444 !important;
+    background-color: rgba(239, 68, 68, 0.05) !important;
+}
+
+.wishlist-badge {
+    position: absolute;
+    top: -4px;
+    right: -6px;
+    background: #ef4444;
+    color: #ffffff;
+    font-size: 0.65rem;
+    font-weight: 700;
+    padding: 0.15rem 0.4rem;
+    border-radius: 50rem;
+    box-shadow: 0 2px 6px rgba(239, 68, 68, 0.4);
+}
+
+/* Toast Container Moderno */
+#gstore-toast-container {
+    position: fixed;
+    top: 24px;
+    right: 24px;
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    pointer-events: none;
+}
+
+.gstore-toast {
+    pointer-events: auto;
+    background: rgba(255, 255, 255, 0.96);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    border-radius: 1rem;
+    padding: 1rem 1.25rem;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-width: 300px;
+    max-width: 380px;
+    animation: toastSlideIn 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    transition: all 0.3s ease;
+}
+
+@keyframes toastSlideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px) scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
     }
 }
 

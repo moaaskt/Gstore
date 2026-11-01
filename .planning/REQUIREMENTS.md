@@ -1,45 +1,55 @@
-# Requisitos do Sistema — Milestone 2
+# Requisitos do Sistema — Milestone 3: Experiência do Usuário & Catálogo Avançado
 
-## Requisitos Concluídos (Milestone 1)
-- [x] Login seguro, autenticação e proteção de rotas administrativas (Filtros CI4).
-- [x] CRUD completo de Produtos, Categorias e Variações (tamanho/cor).
-- [x] Upload de imagens (principal e galeria) e gestão de estoque.
-- [x] Catálogo de produtos (Vitrine) com paginação, busca e filtros instantâneos (categorias, marcas, gêneros, faixa de preço, debounce e sync de URL).
-- [x] Carrinho de compras em sessão com adição/atualização/remoção.
-- [x] Checkout inicial e persistência de pedidos no banco de dados com baixa automática de estoque.
-- [x] Visualização de pedidos no painel do cliente e painel administrativo.
+- **Versão:** v3.0
+- **Status:** 100% Concluído ✓
+- **Objetivo Geral:** Elevar a experiência do usuário (UX/UI) e a robustez do catálogo a um nível premium de portfólio, resolvendo a flexibilidade de produtos multi-atributos (SKUs complexos), fornecendo seletores interativos modernos na PDP com troca de fotos, painel do cliente ("Minha Conta") com timeline visual de pedidos e lista de desejos (Wishlist).
 
 ---
 
-## Requisitos Escopados para o Milestone 2
+## 📋 Requisitos por Fase
 
-### 1. Frete e Cupons de Desconto (Phase 5)
-- [x] **Cálculo de Frete**: Simulação de frete por CEP na página de detalhes do produto e cálculo dinâmico no carrinho/checkout (com opção de frete grátis e prazos estimados).
-- [x] **Gestão de Cupons (Admin)**: CRUD de cupons de desconto (código, tipo fixo ou porcentagem, valor de desconto, valor mínimo de pedido, limite de usos e data de validade).
-- [x] **Aplicação de Cupons (Cliente)**: Campo para aplicar cupom no carrinho e checkout com validação em tempo real e recálculo do valor total.
+### Phase 10: Arquitetura & Gerador de Variações Multi-Atributos (Admin + Database)
+- [x] **Estrutura de Dados Flexível para Variações:**
+  - Suporte a múltiplos atributos por produto (ex: Cor + Armazenamento + RAM para celulares; Cor + Tamanho para roupas; Voltagem + Cor para eletrodomésticos).
+  - Tabela / Estrutura de Variações com suporte a SKU, preço próprio, estoque, código de barras/EAN e foto da variação (`imagem_url` / `imagem_id`).
+  - Atributos dinâmicos estruturados (JSON em `atributos_json`).
+- [x] **Gerador de Grade de SKUs no Admin:**
+  - Interface no cadastro/edição de produtos para definir eixos/atributos e seus valores correspondentes com 4 presets inteligentes (Smartphones, Moda, Calçados, Eletrodomésticos).
+  - Botão "Gerar Combinações" com criação automática da matriz cartesiana completa.
+  - Edição em lote e individual de preço, estoque, SKU e foto por variação.
+- [x] **Compatibilidade e Integridade de Domínio:**
+  - Compatibilidade completa nos services `CarrinhoService` e `PedidoService` para rastreamento de SKUs multi-atributos, cálculo de preço e controle de estoque.
 
-### 2. Gateway de Pagamento (Phase 6)
-- [x] **Pagamento via Pix**: Geração de QR Code e código Copia e Cola para pagamento instantâneo.
-- [x] **Pagamento via Cartão de Crédito**: Formulário com validação de dados de cartão e parcelamento.
-- [x] **Webhook / Callback de Pagamento**: Atualização automática do status do pedido (Pendente -> Pago -> Cancelado).
+### Phase 11: Experiência Interativa de Compra na PDP (Storefront UX)
+- [x] **Seletores Modernos e Reativos na PDP:**
+  - Seletor de Cor via Swatches visuais circulares com hex color, tooltip do nome, ring de foco ativo e label sincronizado.
+  - Seletores de outros atributos (Armazenamento, RAM, Tamanho, Voltagem) em formato de Chips/Pills dinâmicos e elegantes.
+- [x] **Interdependência e Validação Cruzada de Estoque:**
+  - Engine JavaScript N-dimensional com desativação visual e opacidade em combinações sem estoque.
+  - Seleção automática inteligente da primeira combinação disponível ao carregar a página.
+- [x] **Troca Dinâmica de Fotos por Variação:**
+  - Ao selecionar uma cor/variação com foto associada, a foto principal da galeria troca dinamicamente com transição de opacidade suave.
+- [x] **Atualização Reativa de Preço e Parcelas:**
+  - Preço à vista, cálculo de 10x sem juros no cartão e desconto Pix de 5% atualizados instantaneamente conforme a variação selecionada.
 
-### 3. Notificações Transacionais por E-mail & Auditoria (Phase 7 & 7.5)
-- [x] **Configuração de E-mail (SMTP)**: Serviço de envio de e-mails integrado ao CodeIgniter 4 com fila e histórico.
-- [x] **Templates Responsivos de E-mail**:
-  - E-mail de Boas-vindas / Criação de Conta.
-  - E-mail de Pedido Realizado com resumo dos itens e instruções de pagamento.
-  - E-mail de Confirmação de Pagamento.
-  - E-mail de Pedido Enviado / Atualização de Status com rastreio.
-- [x] **Disparo de Eventos & Trilha de Auditoria**: Gatilhos automáticos no ciclo de vida dos pedidos e auditoria completa.
+### Phase 12: Painel "Minha Conta" & Timeline Visual de Pedidos
+- [x] **Área do Cliente Estruturada:**
+  - Layout dedicado para `/minha-conta` com sidebar modular de navegação rápida (Meus Pedidos, Endereços de Entrega, Lista de Desejos, Dados & Segurança).
+- [x] **Timeline Visual de Rastreamento de Pedido:**
+  - Linha do tempo visual iluminada de 5 etapas (*Pedido Realizado ➔ Pagamento Confirmado ➔ Em Separação ➔ Enviado com Rastreio ➔ Entregue*).
+  - Tabela de itens com SKUs, fotos e botão de avaliação com 1 clique para compradores verificados.
+  - Resumo financeiro e botão rápido de Pix QR code para pedidos pendentes.
+- [x] **Gestão de Múltiplos Endereços:**
+  - Tabela `cliente_enderecos` e model com CRUD completo, autopreenchimento por CEP via API ViaCEP e definição de endereço padrão.
+  - Dropdown inteligente de seleção de endereço salvo integrado no checkout (`checkout.php`).
+- [x] **Gestão de Perfil:**
+  - Atualização de dados cadastrais e formulário seguro de alteração de senha com bcrypt.
 
-### 4. Avaliações e Reviews de Produtos (Phase 8)
-- [x] **Estrutura de Avaliações**: Tabela e Model para avaliações (produto_id, usuario_id, nota de 1 a 5 estrelas, título, comentário, status de aprovação e compra verificada).
-- [x] **Formulário de Avaliação**: Permitir que clientes autenticados avaliem produtos com notas e comentários dinâmicos.
-- [x] **Exibição na Vitrine e Detalhes**: Média de notas com estrelas, score, distribuição e listagem de comentários aprovados com selo de compra verificada.
-- [x] **Moderação no Painel Admin**: Aprovação, rejeição e exclusão de comentários com registro na trilha de auditoria.
-
-### 5. Relatórios e Métricas no Painel Admin (Phase 9)
-- [x] **Dashboard Analítico**: Gráficos e cards com faturamento total, faturamento no mês/semana, total de pedidos e ticket médio.
-- [x] **Rankings de Performance**: Produtos mais vendidos, categorias mais lucrativas e clientes com maior volume de compras.
-- [x] **Exportação de Relatórios**: Exportação de listagem de vendas e faturamento em formato CSV/Excel.
-
+### Phase 13: Lista de Desejos (Wishlist) & Micro-interações de Conversão
+- [x] **Lista de Desejos (Favoritos):**
+  - Tabela `cliente_favoritos` e API REST (`/api/favoritos/toggle` e `/api/favoritos/ids`).
+  - Botão de favoritar flutuante com micro-animação elástica (`heartBounce`) na vitrine, nas buscas, nos recomendados e na PDP.
+  - Tela `/minha-conta/favoritos` com visualização rápida de produtos favoritados e botão para mover para o carrinho.
+- [x] **Toasts e Feedback de Alta Fidelidade:**
+  - Motor flutuante de notificações (toasts animados) confirmando ações em tempo real.
+  - Contador de favoritos reativo no header da loja (`#badge-favoritos-nav`) e no menu dropdown.

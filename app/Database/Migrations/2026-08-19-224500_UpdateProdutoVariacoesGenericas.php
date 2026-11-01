@@ -26,7 +26,7 @@ class UpdateProdutoVariacoesGenericas extends Migration
             ],
         ]);
 
-        // Adiciona a coluna 'preco' caso não exista
+        // Adiciona a coluna 'preco' somente se ainda não existir
         if (!$this->db->fieldExists('preco', 'produto_variacoes')) {
             $this->forge->addColumn('produto_variacoes', [
                 'preco' => [

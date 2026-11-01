@@ -86,22 +86,21 @@
                                 </td>
                                 <td>
                                     <div class="d-flex gap-1">
+                                        <a href="<?= site_url('produto/' . $produto['id']) ?>"
+                                            target="_blank"
+                                            class="btn btn-sm btn-outline-secondary"
+                                            style="border-radius:8px;"
+                                            title="Ver na loja"
+                                            id="btn-ver-produto-<?= $produto['id'] ?>">
+                                            <i class="bi bi-eye"></i>
+                                        </a>
                                         <a href="<?= site_url('admin/produtos/edit/' . $produto['id']) ?>"
                                             class="btn btn-sm btn-outline-primary"
                                             style="border-radius:8px;"
+                                            title="Editar"
                                             id="btn-editar-produto-<?= $produto['id'] ?>">
                                             <i class="bi bi-pencil-square"></i>
                                         </a>
-                                        <form action="<?= site_url('admin/produtos/delete/' . $produto['id']) ?>"
-                                            method="post" class="d-inline"
-                                            onsubmit="return confirm('Mover «<?= esc($produto['nome']) ?>» para a lixeira?')">
-                                            <?= csrf_field() ?>
-                                            <button type="submit" class="btn btn-sm btn-outline-danger"
-                                                style="border-radius:8px;"
-                                                id="btn-excluir-produto-<?= $produto['id'] ?>">
-                                                <i class="bi bi-trash3"></i>
-                                            </button>
-                                        </form>
                                     </div>
                                 </td>
                             </tr>
